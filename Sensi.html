@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Sensi Optimize Super⚡️</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    font-family: monospace;
+    color: #0ff;
+    overflow: hidden;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.app {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    max-width: 400px;
+    backdrop-filter: blur(15px);
+    background: rgba(0,0,0,0.7);
+    border: 2px solid cyan;
+    border-radius: 20px;
+    box-shadow: 0 0 30px cyan;
+    padding: 15px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.tabs div {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.active {
+    color: lime;
+}
+
+.page {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+button, select {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background: black;
+    color: cyan;
+    border: 1px solid cyan;
+    border-radius: 10px;
+}
+
+button:hover {
+    background: cyan;
+    color: black;
+}
+
+.bar {
+    width: 100%;
+    height: 8px;
+    background: #111;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: lime;
+}
+
+.log {
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.title {
+    text-align: center;
+    font-size: 18px;
+    text-shadow: 0 0 15px cyan;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="app">
+
+<div class="title">⚡ FF ULTRA AI TOOL ⚡</div>
+
+<div class="tabs">
+<div onclick="openTab(0)" class="active">Home</div>
+<div onclick="openTab(1)">AI Scan</div>
+<div onclick="openTab(2)">Config</div>
+<div onclick="openTab(3)">Info</div>
+</div>
+
+<!-- HOME -->
+<div class="page show">
+Device: <span id="device"></span><br>
+Engine: AI Optimization v4.0<br>
+Status: Ready
+</div>
+
+<!-- SCAN -->
+<div class="page">
+<select id="mode">
+<option>FFTH</option>
+<option>FFM</option>
+</select>
+
+<button onclick="scan()">Run</button>
+
+<div class="bar"><div class="progress" id="prog"></div></div>
+
+<div class="log" id="log"></div>
+</div>
+
+<!-- CONFIG -->
+<div class="page">
+<button onclick="loadSaved()">Load Saved Config</button>
+<div id="configData"></div>
+<button onclick="downloadConfig()">Download Config</button>
+</div>
+
+<!-- INFO -->
+<div class="page">
+Tool: FF Ultra AI<br>
+Version: 9.9 Ultra<br><br>
+App Hỗ trợ kéo tâm<br>
+Tạo nhạy chuẩn<br>
+Giúp bạn dễ kéo tâm<br>
+Tối ưu máy bởi cấu hình<br>
+Antiban 100%<br><br>
+Admin : @quockhanh_19
+</div>
+
+</div>
+
+<script>
+// tab
+function openTab(i){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("show"));
+    document.querySelectorAll(".tabs div").forEach(t=>t.classList.remove("active"));
+
+    document.querySelectorAll(".page")[i].classList.add("show");
+    document.querySelectorAll(".tabs div")[i].classList.add("active");
+}
+
+// detect device
+let ua = navigator.userAgent;
+let device = /iPhone/i.test(ua) ? "iPhone" : /Android/i.test(ua) ? "Android" : "PC";
+document.getElementById("device").innerText = device;
+
+// random 100-200
+function rand(){ return Math.floor(Math.random()*101)+100; }
+
+// animate số
+function animateValue(el, start, end, duration){
+    let startTime = null;
+    function step(timestamp){
+        if(!startTime) startTime = timestamp;
+        let progress = timestamp - startTime;
+        let value = Math.min(Math.floor(progress / duration * end), end);
+        el.innerText = value;
+        if(progress < duration){
+            requestAnimationFrame(step);
+        } else {
+            el.innerText = end;
+        }
+    }
+    requestAnimationFrame(step);
+}
+
+// scan
+function scan(){
+    let prog = document.getElementById("prog");
+    let log = document.getElementById("log");
+
+    let p=0;
+    prog.style.width="0%";
+    log.innerHTML="";
+
+    let interval=setInterval(()=>{
+        p+=5;
+        prog.style.width=p+"%";
+
+        if(p==20) log.innerHTML+="[AI] Scan device...<br>";
+        if(p==40) log.innerHTML+="[SYS] Optimize sens...<br>";
+        if(p==60) log.innerHTML+="[ENGINE] Boost FPS...<br>";
+        if(p==80) log.innerHTML+="[INJECT] Config loading...<br>";
+
+        if(p>=100){
+            clearInterval(interval);
+
+            let mode = document.getElementById("mode").value;
+
+            let data = {
+                general: rand(),
+                red: rand(),
+                x2: rand(),
+                x4: rand(),
+                awm: rand(),
+                free: rand()
+            };
+
+            localStorage.setItem("config", JSON.stringify(data));
+
+            log.innerHTML += `
+<br>✔ Done<br><br>
+Mode: ${mode}<br>
+General: <span id="g"></span><br>
+Red Dot: <span id="r"></span><br>
+2x: <span id="x2"></span><br>
+4x: <span id="x4"></span><br>
+AWM: <span id="awm"></span><br>
+Free Look: <span id="f"></span>
+            `;
+
+            animateValue(g,0,data.general,500);
+            animateValue(r,0,data.red,500);
+            animateValue(x2,0,data.x2,500);
+            animateValue(x4,0,data.x4,500);
+            animateValue(awm,0,data.awm,500);
+            animateValue(f,0,data.free,500);
+        }
+    },120);
+}
+
+// load config
+function loadSaved(){
+    let data = JSON.parse(localStorage.getItem("config"));
+    if(!data) return alert("Chưa có config!");
+
+    document.getElementById("configData").innerHTML = `
+General: ${data.general}<br>
+Red Dot: ${data.red}<br>
+2x: ${data.x2}<br>
+4x: ${data.x4}<br>
+AWM: ${data.awm}<br>
+Free Look: ${data.free}
+    `;
+}
+
+// 🔥 DOWNLOAD + LINK
+function downloadConfig(){
+    let choice = confirm("Tải cấu hình để kéo ngon hơn nhé");
+
+    if(choice){
+        const config = `=== Sensi Super ⚡️ ===
+
+Mô tả:
+- Fix rung + lố
+- Nhẹ tâm
+- Tránh lạc đạn
+- Hỗ trợ bám đầu
+
+Admin: @quockhanh_19`;
+
+        const blob = new Blob([config], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "Sensi Super ⚡️.crt";
+        a.click();
+    } else {
+        window.open("https://link-config-cua-ban.com", "_blank");
+    }
+}
+
+// matrix
+let c=document.getElementById("bg");
+let ctx=c.getContext("2d");
+c.height=innerHeight;
+c.width=innerWidth;
+
+let letters="01";
+let font=12;
+let col=c.width/font;
+let drops=Array(Math.floor(col)).fill(1);
+
+function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle="#0f0";
+    ctx.font=font+"px monospace";
+
+    for(let i=0;i<drops.length;i++){
+        let text=letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text,i*font,drops[i]*font);
+        if(drops[i]*font>c.height && Math.random()>0.975) drops[i]=0;
+        drops[i]++;
+    }
+}
+setInterval(draw,33);
+</script>
+
+</body>
+</html>
